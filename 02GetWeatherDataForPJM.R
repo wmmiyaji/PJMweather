@@ -44,11 +44,14 @@ pjm_weather <- stations_list$icao %>%
                icao = STATION)
       
       # trying to be careful here to handle DST correctly for when you join to meter data and PJM data
+      # NOTE:  that hour is being rounded down, good for when the temperature is joined to an "hour beginning" 
+      # for the meter data, LMP, etc.  
       
       return(one.year)
     })
     
     # to get one measurement per hour find the minute the is most common and then filter on that 
+
     
     Minute_to_keep <- as.character(one.station.weather %>% group_by(Minute) %>% 
                                      dplyr::summarize(Count = n()) %>% 
