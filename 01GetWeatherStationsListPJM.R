@@ -1,8 +1,13 @@
+
+# sudo apt-get install libpoppler-cpp-dev  run this before installing pdftools
 library("pdftools")
 library("tidyverse")
 
-download.file("https://www.pjm.com/-/media/documents/manuals/m19.ashx", "m19.pdf")
-pdf_file <- "m19.pdf" 
+pdf_file <- paste0(HOMEDIR,"/DATA/m19.pdf") 
+download.file("https://www.pjm.com/-/media/documents/manuals/m19.ashx",
+              pdf_file)
+              
+
 text <- pdf_text(pdf_file)
 #need table that spans page 23, 24, 25 
 
