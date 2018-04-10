@@ -14,12 +14,15 @@ forecast_area_list <- c("AE/MIDATL", "AEP", "AP", "ATSI", "BG&E/MIDATL", "COMED"
                         "RTO_COMBINED", "SOUTHERN_REGION", "UGI/MIDATL", "WESTERN_REGION")
 zone_list <- c( "AECO", "AEP", "APS", "ATSI", "BGE", "COMED", "CPL", "DAY", "DEOK", "DOM", "DPL", "DUKE", 
                 "DUQ", "EKPC", "EXTERNAL", "JCPL", "METED", "PECO", "PENELEC", "PEPCO", "PPL", "PSEG", "RECO")
-# think about a zone to forecast area crosswalk 
+
+forecast_zone_crosswalk <- read.csv(paste0(HOMEDIR, "/DATA/forecast_area_zone_crosswalk.csv")) 
+# crosswalk manually created from the two lists above 
 
 # forecast for one area is 168 records
 # 25 different areas are available
 
 # from home this took 14 seconds 
+# 38  seconds on amtrak train 
 forecast_data <- forecast_area_list %>% map_df(.f=function(FORECAST_AREA){
   forecast_url <- paste0("https://api.pjm.com/api/v1/load_frcstd_7_day?rowCount=1000&startRow=1&forecast_area=",FORECAST_AREA)
   json_forecast <- getURL(forecast_url, httpheader = c(paste0("Ocp-Apim-Subscription-Key: ", PJM_API_KEY)))

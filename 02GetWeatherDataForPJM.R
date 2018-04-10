@@ -1,10 +1,13 @@
+
+install.packages("rnoaa")
 library(rnoaa)  # seems like you no longer need the API key but maybe it is stored somewhere on my PC anyway 
 library(tidyverse)
+install.packages("isdparser")
 library(isdparser)
 library(stringr)
 library(lubridate)
 year.list <- 2014:2018 
-
+station_table <- read.csv("./DATA/station_table.csv")
 pjm_station_list <- paste0("K",unique(station_table$Station)) 
 
 stations_list <- isd_stations() %>% filter(icao %in% pjm_station_list) %>% 
