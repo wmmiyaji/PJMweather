@@ -7,7 +7,7 @@ library(isdparser)
 library(stringr)
 library(lubridate)
 year.list <- 2014:2018 
-station_table <- read.csv("./DATA/station_table.csv")
+station_table <- read.csv(paste0(HOMEDIR, "/station_table.csv"))
 pjm_station_list <- paste0("K",unique(station_table$Station)) 
 
 stations_list <- isd_stations() %>% filter(icao %in% pjm_station_list) %>% 

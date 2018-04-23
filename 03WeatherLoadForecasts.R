@@ -1,5 +1,6 @@
 # Weather Load Forecasts 
 library(RCurl)
+library(rnoaa)
 library(jsonlite)
 library(tidyverse)
 library(purrrlyr)
@@ -49,7 +50,11 @@ get_update_time <- function(X){
 
 
 
+station_table <- read.csv(paste0(HOMEDIR, "/station_table.csv"))
+pjm_station_list <- paste0("K",unique(station_table$Station)) 
 
+stations_list <- isd_stations() %>% filter(icao %in% pjm_station_list) %>% 
+  group_by(icao) %>% top_n(1,end) %>% ungroup()  
 
 
 
