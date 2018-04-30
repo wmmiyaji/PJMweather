@@ -8,14 +8,17 @@ source("PJM_creds.R")  # not in github, one line,  "PJM_API_KEY <- "Ocp-Apim-Sub
 tzNY = "America/New_York"
 
 
-forecast_area_list <- c("AE/MIDATL", "AEP", "AP", "ATSI", "BG&E/MIDATL", "COMED", "DAYTON", "DEOK", "DOMINION", 
-                        "DP&L/MIDATL", "DUQUESNE", "EKPC", "JCP&L/MIDATL", "METED/MIDATL", "MID_ATLANTIC_REGION", 
-                        "PECO/MIDATL", "PENELEC/MIDATL", "PEPCO/MIDATL", "PPL/MIDATL", "PSE&G/MIDATL", "RECO", 
+
+# you need to encode the & for BG&E, etc., with %26 since we are sending as url
+forecast_area_list <- c("AE/MIDATL", "AEP", "AP", "ATSI", "BG%26E/MIDATL", "COMED", "DAYTON", "DEOK", "DOMINION", 
+                        "DP%26L/MIDATL", "DUQUESNE", "EKPC", "JCP%26L/MIDATL", "METED/MIDATL", "MID_ATLANTIC_REGION", 
+                        "PECO/MIDATL", "PENELEC/MIDATL", "PEPCO/MIDATL", "PPL/MIDATL", "PSE%26G/MIDATL", "RECO/MIDATL", 
                         "RTO_COMBINED", "SOUTHERN_REGION", "UGI/MIDATL", "WESTERN_REGION")
+
 zone_list <- c( "AECO", "AEP", "APS", "ATSI", "BGE", "COMED", "CPL", "DAY", "DEOK", "DOM", "DPL", "DUKE", 
                 "DUQ", "EKPC", "EXTERNAL", "JCPL", "METED", "PECO", "PENELEC", "PEPCO", "PPL", "PSEG", "RECO")
 
-forecast_zone_crosswalk <- read.csv(paste0(HOMEDIR, "/DATA/forecast_area_zone_crosswalk.csv")) 
+#forecast_zone_crosswalk <- read.csv(paste0(HOMEDIR, "/DATA/forecast_area_zone_crosswalk.csv")) 
 # crosswalk manually created from the two lists above 
 
 # forecast for one area is 168 records
@@ -54,7 +57,7 @@ g_1 <-   forecast_data %>%
   print(g_1)  # this should be scaled to percent of peak annual forecast 
 
 # one forecast per page
-forecast_area_list %>% walk(.f=function(FORECAST_AREA){
+ unique(forecast_data$forecast_area) %>% walk(.f=function(FORECAST_AREA){
   ESTIMATE_TIME <- ymd_hms(
       head(
         (forecast_data %>% filter(forecast_area == FORECAST_AREA))$evaluated_at_datetime_ept, 1
